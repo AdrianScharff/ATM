@@ -1,0 +1,85 @@
+Crearemos una aplicacion web donde simulemos la interaccion con un cajero automatico
+--------------------------------------
+Van a existir minimo 3 cuentas que vamos a guardar en un arreglo de objectos con propiedades usuario, saldo y password
+
+Lo primero sera pedirle al cliente que elija la cuenta con la que desea interactuar
+declarar el input para que elija una cuenta
+
+crear la funcion checkUser que:
+    itera sobre todos los objetos del array cuentas V
+        revisa si el valor del home-input coincide con la propiedad usuario de alguno de los objetos, si coincide, entonces: V
+            agrega la clase d-none al home-section V
+            retira la clase d-none al password-section V
+            llama a la funcion para el password V
+        si no coincide con ninguno, entonces
+            retira la clase d-none a la home-alert V
+
+
+funcion para el password
+    revisa que el valor del password-input coincida con la propiedad password del mismo objeto del cual ingresó la propiedad usuario, si es asi entonces: V
+        agrega la clase d-none al password-section V
+        remueve la clase d-none al options-section V
+        para el boton de balance agrega un event listener que al click triggerea la funcion checkBalance
+        para el boton de enter agrega un event listener que al click triggerea la funcion enterAmount
+        para el boton de withdraw agrega un event listener que al click triggerea la funcion withdrawAmount
+    si no coinciden
+        retira la clase d-none a la password-alert V
+
+funcion checkBalance
+    actualiza el innerText de balance-num poniendole la propiedad saldo del objeto cuenta V
+    agrega la clase d-none a la options section V
+    remueve la clase d-none a la balance section V
+
+function enterAmount
+    Agrega un event listener para el submit del enter-form en el cual en el submit
+        previene el default V
+        Si la suma del valor del #en-input + la propiedad saldo del objeto cuenta es menor o igual a 990 V
+            triggerea la funcion displayEntered V
+        else V
+            agrega d-none al btnEnterNext
+            remueve la clase d-none de la rule-bigger-alert V
+            agrega event listener al boton si Bigger que al click
+                llama la funcion displayEntered
+            agrega event listener al boton no Bigger que al click
+                agrega d-none a la rule-bigger-alert
+                remueve d-none del btnEnterNext
+                asigna el enter-input value = "";
+
+    agrega la clase d-none a la options section V
+    remueve la clase d-none a la enter section V
+
+function withdrawAmount
+    Agrega un event listener para el submit del withdraw-form en el cual 
+        previene el default
+        Si la resta de la propiedad saldo del objeto cuenta - el valor del #en-input es mayor o igual a 10
+            triggerea la funcion displayWithdrawn
+        else
+            agrega d-none al btnWithdrawNext
+            remueve la clase d-none de la rule-smaller-alert V
+            agrega event listener al boton si Smaller que al click
+                llama la funcion displayWithdrawn
+            agrega event listener al boton no Smaller que al click
+                agrega d-none a la rule-smaller-alert
+                remueve d-none del btnSmallerNext
+                asigna el withdraw-input value = "";
+    agrega la clase d-none a la options section V
+    remueve la clase d-none a la withdraw-section V
+
+function displayEntered
+    poner el texto de balance-num-entered igual a el valor del #en-input V
+    poner el texto de balance-num-up igual a la suma del valor del #en-input + la propiedad saldo del objeto cuenta V
+    Agrega la clase d-none a la enter-section V
+    Remueve la clase d-none a la entered-amount-section V
+
+function displayWithdrawn
+    previene el default V
+    poner el texto de balance-num-withdrawn igual a el valor del #wd-input V
+    poner el texto de balance-num-down igual a la resta de la propiedad saldo del objeto cuenta - el valor del #wd-input V
+    Agrega la clase d-none a la withdraw-section V
+    Remueve la clase d-none a la withdrawn-amount-section V
+    
+
+HTML
+Agregar botones para regresar a la seccion de opciones (menu principal) a las secciones de balance-section, enter-section y withdraw-section
+Agregar boton para regresar al enter-section a la entered-amount-section
+Agregar boton para regresar al withdraw-section a la withdrawn-amount-section
