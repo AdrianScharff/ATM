@@ -83,3 +83,11 @@ HTML
 Agregar botones para regresar a la seccion de opciones (menu principal) a las secciones de balance-section, enter-section y withdraw-section
 Agregar boton para regresar al enter-section a la entered-amount-section
 Agregar boton para regresar al withdraw-section a la withdrawn-amount-section
+
+
+
+    { user: 'Mike23', balance: 1000, password: 'Mike321' },
+    { user: 'Lisa47', balance: 900, password: 'Lisa123' },
+    { user: 'Jackson52', balance: 300, password: 'Jack321' },
+    { user: 'Emily66', balance: 200, password: 'Emi123' },
+    { user: 'James99', balance: 1700, password: 'James321' }
