@@ -1,11 +1,15 @@
 // Declaracion de variables
 const cuentas = [
-    { usuario: 'Mike23', saldo: 500, password: 'Mike321' },
+    { usuario: 'Mike23', saldo: 1000, password: 'Mike321' },
     { usuario: 'Lisa47', saldo: 900, password: 'Lisa123' },
     { usuario: 'Jackson52', saldo: 300, password: 'Jack321' },
     { usuario: 'Emily66', saldo: 200, password: 'Emi123' },
     { usuario: 'James99', saldo: 1700, password: 'James321' },
 ];
+let enterEventListenerAdded = false;
+let withdrawEventListenerAdded = false;
+let enterSubmitHandler = null;
+let withdrawSubmitHandler = null;
 // secciones
 const homeSection = document.querySelector('.home-section');
 const passwordSection = document.querySelector('.password-section');
@@ -108,10 +112,11 @@ const checkBalance = (cuenta) => {
 }
 
 const enterAmount = (cuenta) => {
-    enterForm.addEventListener('submit', (e) => {
+    enterSubmitHandler = (e) => {
         e.preventDefault();
         const valueEntered = parseInt(enterInput.value);
         const sumEntered = valueEntered + cuenta.saldo;
+        console.log(`enterAmount is triggered here!`);
         if (sumEntered <= 990) {
             displayEntered(cuenta, valueEntered, sumEntered);
         }
@@ -127,18 +132,24 @@ const enterAmount = (cuenta) => {
                 enterInput.value = "";
             });
         }
-    });
+    };
+
     enterInput.value = "";
     optionsSection.classList.add('d-none');
     enterSection.classList.remove('d-none');
     btnBack.classList.remove('d-none');
+
+    enterForm.addEventListener('submit', enterSubmitHandler);
+    enterEventListenerAdded = true;
+    console.log(enterEventListenerAdded);
 }
 
 const withdrawAmount = (cuenta) => {
-    withdrawForm.addEventListener('submit', (e) => {
+    withdrawSubmitHandler = (e) => {
         e.preventDefault();
         const valueWithdrawn = parseInt(withdrawInput.value);
         const subtractWithdrawn = cuenta.saldo - valueWithdrawn;
+        console.log(`withdrawAmount is triggered here!`);
         if (subtractWithdrawn >= 10) {
             displayWithdrawn(cuenta, valueWithdrawn, subtractWithdrawn);
         }
@@ -154,11 +165,16 @@ const withdrawAmount = (cuenta) => {
                 withdrawInput.value = "";
             });
         }
-    });
+    };
+
     withdrawInput.value = "";
     optionsSection.classList.add('d-none');
     withdrawSection.classList.remove('d-none');
     btnBack.classList.remove('d-none');
+
+    withdrawForm.addEventListener('submit', withdrawSubmitHandler);
+    withdrawEventListenerAdded = true;
+    console.log(withdrawEventListenerAdded);
 }
 
 const displayEntered = (cuenta, val, sum) => {
@@ -184,6 +200,31 @@ const goBack = (currentSection, previousSection) => {
     previousSection.classList.remove('d-none');
 }
 
+const removeListeners = () => {
+    console.log(`Yes I'm triggering when the optionsSection doesn't contain the class d-none`);
+    if (enterEventListenerAdded === true) {
+        enterForm.removeEventListener('submit', enterSubmitHandler);
+        console.log(`yes I'm removing the event listener to enterForm`);
+        enterEventListenerAdded = false;
+    }
+    if (withdrawEventListenerAdded === true) {
+        withdrawForm.removeEventListener('submit', withdrawSubmitHandler);
+        console.log(`yes I'm removing the event listener to withdrawForm`);
+        withdrawEventListenerAdded = false;
+    }
+}
+
+const removeAlerts = () => {
+    if (!ruleBiggerAlert.classList.contains('d-none')) {
+        ruleBiggerAlert.classList.add('d-none');
+        btnEnterNext.classList.remove('d-none');
+    }
+    if (!ruleSmallerAlert.classList.contains('d-none')) {
+        ruleSmallerAlert.classList.add('d-none');
+        btnWithdrawNext.classList.remove('d-none');
+    }
+}
+
 // Llamado de eventos
 homeForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -204,25 +245,23 @@ btnBack.addEventListener('click', () => {
     }
     else if (!enterSection.classList.contains('d-none')) {
         goBack(enterSection, optionsSection);
+        removeListeners();
+        removeAlerts();
     }
     else if (!withdrawSection.classList.contains('d-none')) {
         goBack(withdrawSection, optionsSection);
+        removeListeners();
+        removeAlerts();
     }
     else if (!enteredAmountSection.classList.contains('d-none')) {
         goBack(enteredAmountSection, enterSection);
-        if(!ruleBiggerAlert.classList.contains('d-none')) {
-            ruleBiggerAlert.classList.add('d-none');
-            btnEnterNext.classList.remove('d-none');
-        }
+        removeAlerts();
         btnBackOptions.classList.add('d-none');
         enterInput.value = "";
     }
     else {
         goBack(withdrawnAmountSection, withdrawSection);
-        if(!ruleSmallerAlert.classList.contains('d-none')) {
-            ruleSmallerAlert.classList.add('d-none');
-            btnWithdrawNext.classList.remove('d-none');
-        }
+        removeAlerts();
         btnBackOptions.classList.add('d-none');
         withdrawInput.value = "";
     }
@@ -234,17 +273,19 @@ btnBack.addEventListener('click', () => {
 btnBackOptions.addEventListener('click', () => {
     if (!enteredAmountSection.classList.contains('d-none')) {
         goBack(enteredAmountSection, optionsSection);
+        removeListeners();
     }
     else {
         goBack(withdrawnAmountSection, optionsSection);
+        removeListeners();
     }
     btnBack.classList.add('d-none');
     btnBackOptions.classList.add('d-none');
-    if(!ruleBiggerAlert.classList.contains('d-none')) {
+    if (!ruleBiggerAlert.classList.contains('d-none')) {
         ruleBiggerAlert.classList.add('d-none');
         btnEnterNext.classList.remove('d-none');
     }
-    if(!ruleSmallerAlert.classList.contains('d-none')) {
+    if (!ruleSmallerAlert.classList.contains('d-none')) {
         ruleSmallerAlert.classList.add('d-none');
         btnWithdrawNext.classList.remove('d-none');
     }
